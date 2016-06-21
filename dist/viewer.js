@@ -1140,10 +1140,29 @@
      */
     move: function (offsetX, offsetY) {
       var image = this.image;
+      var viewer = this.viewer;
+      /**
+       We should prevent the picture moved off the screen. so we do some sanity check.
+      */
+      var keepInScreen = viewer.width/5;
+
+      var newLeft = image.left + num(offsetX);
+      if (newLeft + image.width < keepInScreen) {
+          newLeft = keepInScreen - image.width;
+      } else if (newLeft + keepInScreen > viewer.width) {
+          newLeft = viewer.width - keepInScreen;
+      }
+
+      var newTop = image.top + num(offsetY);
+      if (newTop + image.height < keepInScreen) {
+          newTop = keepInScreen - image.height;
+      } else if (newTop + keepInScreen > viewer.height) {
+          newTop = viewer.height - keepInScreen;
+      }
 
       this.moveTo(
-        isUndefined(offsetX) ? offsetX : image.left + num(offsetX),
-        isUndefined(offsetY) ? offsetY : image.top + num(offsetY)
+        isUndefined(offsetX) ? offsetX : newLeft,
+        isUndefined(offsetY) ? offsetY : newTop
       );
     },
 
@@ -1773,8 +1792,8 @@
       var image = this.image;
       var viewer = this.viewer;
 
-      return (image.left >= 0 && image.top >= 0 && image.width <= viewer.width &&
-        image.height <= viewer.height);
+      return (image.left >= 0 && image.top >= 0 && (image.left + image.width) <= viewer.width &&
+        (image.top + image.height) <= viewer.height);
     }
   };
 
