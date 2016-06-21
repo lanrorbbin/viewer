@@ -131,7 +131,7 @@
       var image = this.image;
       var viewer = this.viewer;
 
-      return (image.left >= 0 && image.top >= 0 && image.width <= viewer.width &&
-        image.height <= viewer.height);
+      return (image.left >= 0 && image.top >= 0 && (image.left + image.width) <= viewer.width &&
+        (image.top + image.height) <= viewer.height);
     }
   };
