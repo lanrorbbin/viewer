@@ -5,7 +5,7 @@
  * Copyright (c) 2015-2016 Fengyuan Chen
  * Released under the MIT license
  *
- * Date: 2016-03-11T07:57:59.486Z
+ * Date: 2016-06-22T09:15:40.033Z
  */
 
 (function (factory) {
@@ -118,12 +118,13 @@
     var scaleX = options.scaleX;
     var scaleY = options.scaleY;
 
-    if (isNumber(rotate)) {
-      transforms.push('rotate(' + rotate + 'deg)');
-    }
-
+    // Scale should come first before rotate
     if (isNumber(scaleX) && isNumber(scaleY)) {
       transforms.push('scale(' + scaleX + ',' + scaleY + ')');
+    }
+
+    if (isNumber(rotate)) {
+      transforms.push('rotate(' + rotate + 'deg)');
     }
 
     return transforms.length ? transforms.join(' ') : 'none';
@@ -1141,10 +1142,10 @@
     move: function (offsetX, offsetY) {
       var image = this.image;
       var viewer = this.viewer;
-      /**
-       We should prevent the picture moved off the screen. so we do some sanity check.
-      */
-      var keepInScreen = viewer.width/5;
+        /**
+        We should prevent the picture moved off the screen. so we do some sanity check.
+        */
+        var keepInScreen = viewer.width/5;
 
       var newLeft = image.left + num(offsetX);
       if (newLeft + image.width < keepInScreen) {
